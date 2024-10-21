@@ -39,19 +39,39 @@ public class BaseballGame {
         int remainNum = 0;
         ArrayList<Integer> inputNum = new ArrayList<>();
 
+        //
         while (true) {
+            try {
+                System.out.println("숫자를 입력해주세요! : ");
+                input = sc.nextInt();
 
-            System.out.println("숫자를 입력해주세요! : ");
-            input = sc.nextInt();
+                //나머지를 이용하여 각 자릿수를 배열로 저장
+                while (input > 0) {
+                    remainNum = input % 10;
+                    inputNum.add(remainNum);
+                    input = input / 10;
+                }
 
-            //나머지를 이용하여 각 자릿수를 배열로 저장
-            while (input > 0) {
-                remainNum = input % 10;
-                inputNum.add(remainNum);
-                input = input / 10;
+                //배열에 같은 값이 있을 경우 정제된 문자열 출력
+                if (inputNum.size() != inputNum.stream().distinct().count()) {
+                    System.out.println("올바르지 않은 입력값입니다!!");
+                    inputNum.clear();
+
+                    //입력받은 값이 세자리가 아닐 경우 정제된 문자 출력
+                } else if (inputNum.size() != 3) {
+                    System.out.println("올바르지 않은 입력값입니다!!");
+                    inputNum.clear();
+                } else {
+                    break;
+                }
+
+                //숫자가 아닌 값을 입력할 경우 예외처리
+            } catch (InputMismatchException e) {
+                sc.nextLine();
+                System.out.println("올바르지 않은 입력값입니다!!");
             }
-            break;
         }
+
         //입력된 순서를 유지하기 위해 reverse 사용
         Collections.reverse(inputNum);
         System.out.println(inputNum);
