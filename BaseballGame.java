@@ -3,6 +3,10 @@ package numplay;
 import java.util.*;
 
 public class BaseballGame {
+    //리스트를 전역변수로 선언
+    ArrayList<Integer> correctNum;
+    ArrayList<Integer> inputNum;
+
     //객체 생성시 정답을 만들도록 함
     public BaseballGame() {
         //Random 클래스로 난수 생성
@@ -24,8 +28,9 @@ public class BaseballGame {
                     break;
             }
         }
+
         //랜덤하게 섞기 위하여 Hashset 을 ArrayList 로 형변환
-        ArrayList<Integer> correctNum = new ArrayList<>(hashNum);
+        correctNum = new ArrayList<>(hashNum);
         //요소를 랜던하게 섞음
         Collections.shuffle(correctNum);
         System.out.println(correctNum);
@@ -34,13 +39,18 @@ public class BaseballGame {
     public int play() {
         Scanner sc = new Scanner(System.in);
         //입력 받은 값을 저장
-        int input = 0;
+        int input;
+        int tryNum = 0;
+
         //각 자릿수를 배열로 저장하기 위해 변수 선언
-        int remainNum = 0;
-        ArrayList<Integer> inputNum = new ArrayList<>();
+        int remainNum;
+        inputNum = new ArrayList<>();
 
         //
         while (true) {
+            //게임 진행 횟수 증가
+            tryNum ++;
+
             try {
                 System.out.println("숫자를 입력해주세요! : ");
                 input = sc.nextInt();
@@ -51,6 +61,8 @@ public class BaseballGame {
                     inputNum.add(remainNum);
                     input = input / 10;
                 }
+                //입력된 순서를 유지하기 위해 reverse 사용
+                Collections.reverse(inputNum);
 
                 //배열에 같은 값이 있을 경우 정제된 문자열 출력
                 if (inputNum.size() != inputNum.stream().distinct().count()) {
@@ -61,8 +73,14 @@ public class BaseballGame {
                 } else if (inputNum.size() != 3) {
                     System.out.println("올바르지 않은 입력값입니다!!");
                     inputNum.clear();
-                } else {
+                    //스트라이크 개수가 3개일 경우 정답 출력
+                } else if (countStrike(inputNum,correctNum) == 3){
+                    System.out.println("정답입니다!!");
                     break;
+                    //스트라이크 개수가 3개가 아닐 경우 힌트 출력
+                } else {
+                    System.out.println(countStrike(inputNum,correctNum) + "스트라이크");
+                    inputNum.clear();
                 }
 
                 //숫자가 아닌 값을 입력할 경우 예외처리
@@ -71,10 +89,26 @@ public class BaseballGame {
                 System.out.println("올바르지 않은 입력값입니다!!");
             }
         }
-
-        //입력된 순서를 유지하기 위해 reverse 사용
-        Collections.reverse(inputNum);
         System.out.println(inputNum);
-        return input;
+        return tryNum;
+    }
+
+    protected boolean validateInput(String input) {
+        return false;
+    }
+
+    //스트라이크 개수 계산
+    private int countStrike(List<Integer>inputNum, List<Integer>correctNum) {
+        int count = 0;
+        for (int i = 0; i < inputNum.size(); i++) {
+            if (inputNum.get(i) == correctNum.get(i)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private int countBall(String input) {
+        return 0;
     }
 }
