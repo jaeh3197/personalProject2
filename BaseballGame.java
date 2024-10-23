@@ -70,16 +70,24 @@ public class BaseballGame {
                     inputNum.clear();
 
                     //입력받은 값이 세자리가 아닐 경우 정제된 문자 출력
-                } else if (inputNum.size() != 3) {
+                } else if (inputNum.size() != 3 || inputNum.contains(0)) {
                     System.out.println("올바르지 않은 입력값입니다!!");
                     inputNum.clear();
-                    //스트라이크 개수가 3개일 경우 정답 출력
-                } else if (countStrike(inputNum,correctNum) == 3){
+
+                }//스트라이크 개수가 3개일 경우 정답 출력
+                else if (countStrike(inputNum,correctNum) == 3){
                     System.out.println("정답입니다!!");
                     break;
-                    //스트라이크 개수가 3개가 아닐 경우 힌트 출력
-                } else {
+                }
+                //숫자와 자리 둘다 다른 경우
+                else if (countStrike(inputNum,correctNum) == 0 && countBall(inputNum,correctNum) == 0) {
+                    System.out.println("아웃");
+                    inputNum.clear();
+                }
+                //스트라이크 개수가 3개가 아닐 경우 힌트 출력
+                else {
                     System.out.println(countStrike(inputNum,correctNum) + "스트라이크");
+                    System.out.println(countBall(inputNum,correctNum) + "볼");
                     inputNum.clear();
                 }
 
@@ -108,7 +116,11 @@ public class BaseballGame {
         return count;
     }
 
-    private int countBall(String input) {
-        return 0;
+    //볼 개수 계산
+    private int countBall(List<Integer>inputNum, List<Integer>correctNum) {
+        int strike;
+        strike = countStrike(inputNum,correctNum);
+        inputNum.retainAll(correctNum);
+        return inputNum.size() - strike;
     }
 }
