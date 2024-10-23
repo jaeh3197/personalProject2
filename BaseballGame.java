@@ -67,27 +67,29 @@ public class BaseballGame {
             //입력값이 유효하지 않을 경우 문자열 출력
             if (!validateInput(input)) {
                 System.out.println("올바르지 않은 입력값입니다.");
+                System.out.println();
             }
 
             //스트라이크 개수가 3개일 경우 정답 출력
             else if (countStrike(inputNum, correctNum) == 3) {
                 System.out.println("정답입니다!!");
+                System.out.println();
                 break;
             }
 
             //숫자와 자리 둘다 다른 경우
             else if (countStrike(inputNum, correctNum) == 0 && countBall(inputNum, correctNum) == 0) {
                 System.out.println("아웃");
+                System.out.println();
             }
 
             //스트라이크 개수가 3개가 아닐 경우 힌트 출력
             else {
-                System.out.println(countStrike(inputNum, correctNum) + "스트라이크");
-                System.out.println(countBall(inputNum, correctNum) + "볼");
+                System.out.println(countStrike(inputNum, correctNum) + "스트라이크 " + countBall(inputNum, correctNum) + "볼");
+                System.out.println();
             }
         }
-        System.out.println(inputNum);
-        System.out.println(tryNum);
+        System.out.println(tryNum + "번 시도하셨습니다!");
         return tryNum;
     }
 
