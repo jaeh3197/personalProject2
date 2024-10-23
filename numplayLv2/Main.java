@@ -1,4 +1,4 @@
-package numplay;
+package numplay.numplayLv2;
 
 public class Main {
     public static void main(String[] args) {
