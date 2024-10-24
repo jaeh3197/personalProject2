@@ -1,4 +1,4 @@
-package numplay;
+package numplay.numplayLv3;
 
 import java.util.*;
 import java.util.regex.Pattern;
