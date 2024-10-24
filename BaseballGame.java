@@ -12,24 +12,18 @@ public class BaseballGame {
     ArrayList<Integer> inputNum;
 
     //객체 생성시 정답을 만들도록 함
-    public BaseballGame() {
+    public BaseballGame(String digitNum) {
         //Random 클래스로 난수 생성
         Random rand = new Random();
         //난수를 중복없이 저장 할 객체 생성
         Set<Integer> randNum = new HashSet<>();
-        //while 문 종료를 위한 변수 선언
-        boolean run = true;
+        //넘겨 받은 난이도 변수를 정수로 변환
+        int digitNumInt = Integer.parseInt(digitNum);
 
-        while (run) {
+        //난이도 만큼 난수 생성
+        while (randNum.size() < digitNumInt) {
             //1~9 사이의 숫자만 생성하여 저장
             randNum.add(rand.nextInt(9) + 1);
-
-            //3개의 숫자가 저장될 시 종료
-            switch (randNum.size()) {
-                case 3:
-                    run = false;
-                    break;
-            }
         }
 
         //랜덤하게 섞기 위하여 Hashset 을 ArrayList 로 형변환
@@ -70,8 +64,8 @@ public class BaseballGame {
                 System.out.println();
             }
 
-            //스트라이크 개수가 3개일 경우 정답 출력
-            else if (countStrike(inputNum, correctNum) == 3) {
+            //스트라이크 개수가 정답 개수와 같을 경우 정답 출력
+            else if (countStrike(inputNum, correctNum) == correctNum.size()) {
                 System.out.println("정답입니다!!");
                 System.out.println();
                 break;
@@ -83,19 +77,22 @@ public class BaseballGame {
                 System.out.println();
             }
 
-            //스트라이크 개수가 3개가 아닐 경우 힌트 출력
+            //정답이 아닐 경우 힌트 출력
             else {
                 System.out.println(countStrike(inputNum, correctNum) + "스트라이크 " + countBall(inputNum, correctNum) + "볼");
                 System.out.println();
             }
         }
+
+        //정답을 맞출 경우 시도 횟수 출력
         System.out.println(tryNum + "번 시도하셨습니다!");
+        System.out.println();
         return tryNum;
     }
 
     //입력 받은 값 유효성 검사
     protected boolean validateInput(String input) {
-        return Pattern.matches("^[1-9]*$", input) && inputNum.size() == 3;
+        return Pattern.matches("^[1-9]*$", input) && inputNum.size() == correctNum.size();
     }
 
     //스트라이크 개수 계산
